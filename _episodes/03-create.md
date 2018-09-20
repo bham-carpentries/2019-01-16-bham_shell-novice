@@ -12,12 +12,14 @@ objectives:
 keypoints:
 - "`cp old new` copies a file."
 - "`mkdir path` creates a new directory."
+- "Most files' names are `something.extension`. The extension isn't required, and doesn't guarantee anything, but is normally used to indicate the type of data in the file."
 - "`mv old new` moves (renames) a file or directory."
 - "`rm path` removes (deletes) a file."
 - "Use of the Control key may be described in many ways, including `Ctrl-X`, `Control-X`, and `^X`."
 - "The shell does not have a trash bin: once something is deleted, it's really gone."
 - "Depending on the type of work you do, you may need a more powerful text editor than Nano."
 ---
+
 
 We now know how to explore files and directories,
 but how do we create them in the first place?
@@ -114,6 +116,8 @@ $ ls -F thesis
 Let's change our working directory to `thesis` using `cd`,
 then run a text editor called Nano to create a file called `draft.txt`:
 
+## TODO:  Figure out good default text editor and update accordingly
+
 ~~~
 $ cd thesis
 $ nano draft.txt
@@ -143,6 +147,20 @@ $ nano draft.txt
 > documents directory instead. You can change this by navigating to
 > another directory the first time you "Save As..."
 {: .callout}
+
+> ## Text vs. Whatever
+>
+> We usually call programs like Microsoft Word or LibreOffice Writer "text
+> editors", but we need to be a bit more careful when it comes to
+> programming. By default, Microsoft Word uses `.docx` files to store not
+> only text, but also formatting information about fonts, headings, and so
+> on. This extra information isn't stored as characters, and doesn't mean
+> anything to tools like `head`: they expect input files to contain
+> nothing but the letters, digits, and punctuation on a standard computer
+> keyboard. When editing programs, therefore, you must either use a plain
+> text editor, or be careful to save files as plain text.
+{: .callout}
+
 
 Let's type in a few lines of text.
 Once we're happy with our text, we can press `Ctrl-O` (press the Ctrl or Control key and, while
@@ -187,50 +205,9 @@ draft.txt
 ~~~
 {: .output}
 
-> ## Creating Files a Different Way
->
-> We have seen how to create text files using the `nano` editor.
-> Now, try the following command in your home directory:
->
-> ~~~
-> $ cd                  # go to your home directory
-> $ touch my_file.txt
-> ~~~
-> {: .language-bash}
->
-> 1.  What did the touch command do?
->     When you look at your home directory using the GUI file explorer,
->     does the file show up?
->
-> 2.  Use `ls -l` to inspect the files.  How large is `my_file.txt`?
->
-> 3.  When might you want to create a file this way?
->
-> > ## Solution
-> > 1.  The touch command generates a new file called 'my_file.txt' in
-> >     your home directory.  If you are in your home directory, you
-> >     can observe this newly generated file by typing 'ls' at the 
-> >     command line prompt.  'my_file.txt' can also be viewed in your
-> >     GUI file explorer.
-> >
-> > 2.  When you inspect the file with 'ls -l', note that the size of
-> >     'my_file.txt' is 0kb.  In other words, it contains no data.
-> >     If you open 'my_file.txt' using your text editor it is blank.
-> >
-> > 3.  Some programs do not generate output files themselves, but
-> >     instead require that empty files have already been generated.
-> >     When the program is run, it searches for an existing file to
-> >     populate with its output.  The touch command allows you to
-> >     efficiently generate a blank text file to be used by such
-> >     programs.
-> {: .solution}
-{: .challenge}
-
-Returning to the `data-shell` directory,
-let's tidy up the `thesis` directory by removing the draft we created:
+Now let's tidy up the `thesis` directory by removing the draft we created:
 
 ~~~
-$ cd thesis
 $ rm draft.txt
 ~~~
 {: .language-bash}
@@ -248,8 +225,9 @@ $ ls
 > ## Deleting Is Forever
 >
 > The Unix shell doesn't have a trash bin that we can recover deleted
-> files from (though most graphical interfaces to Unix do).  Instead,
-> when we delete files, they are unhooked from the file system so that
+> files from (though most graphical interfaces to Unix do). In other words,
+> **if you remove (`rm`) something, it's gone forever!** 
+> When we delete files in bash, they are unhooked from the file system so that
 > their storage space on disk can be recycled. Tools for finding and
 > recovering deleted files do exist, but there's no guarantee they'll
 > work in any particular situation, since the computer may recycle the
@@ -307,22 +285,6 @@ We can do this with the [recursive](https://en.wikipedia.org/wiki/Recursion) opt
 $ rm -r thesis
 ~~~
 {: .language-bash}
-
-> ## Using `rm` Safely
->
-> What happens when we type `rm -i thesis/quotations.txt`?
-> Why would we want this protection when using `rm`?
->
-> > ## Solution
-> > ```
-> > $ rm: remove regular file 'thesis/quotations.txt'?
-> > ```
-> > {: .language-bash} 
-> > The -i option will prompt before every removal. 
-> > The Unix shell doesn't have a trash bin, so all the files removed will disappear forever. 
-> > By using the -i flag, we have the chance to check that we are deleting only the files that we want to remove.
-> {: .solution}
-{: .challenge}
 
 > ## With Great Power Comes Great Responsibility
 >
@@ -397,9 +359,9 @@ quotes.txt
 {: .output}
 
 One has to be careful when specifying the target file name, since `mv` will
-silently overwrite any existing file with the same name, which could
-lead to data loss. An additional flag, `mv -i` (or `mv --interactive`),
-can be used to make `mv` ask you for confirmation before overwriting.
+**silently overwrite any existing file with the same name**, which could
+lead to data loss. Just as for `rm`, you can use an additional flag, `mv -i` (or `mv --interactive`),
+to make `mv` ask you for confirmation before overwriting.
 
 Just for the sake of consistency,
 `mv` also works on directories
@@ -604,52 +566,6 @@ but it does find the copy in `thesis` that we didn't delete.
 > {: .solution}
 {: .challenge}
 
-> ## Organizing Directories and Files
->
-> Jamie is working on a project and she sees that her files aren't very well
-> organized:
->
-> ~~~
-> $ ls -F
-> ~~~
-> {: .language-bash}
-> ~~~
-> analyzed/  fructose.dat    raw/   sucrose.dat
-> ~~~
-> {: .output}
->
-> The `fructose.dat` and `sucrose.dat` files contain output from her data
-> analysis. What command(s) covered in this lesson does she need to run so that the commands below will
-> produce the output shown?
->
-> ~~~
-> $ ls -F
-> ~~~
-> {: .language-bash}
-> ~~~
-> analyzed/   raw/
-> ~~~
-> {: .output}
-> ~~~
-> $ ls analyzed
-> ~~~
-> {: .language-bash}
-> ~~~
-> fructose.dat    sucrose.dat
-> ~~~
-> {: .output}
->
-> > ## Solution
-> > ```
-> > mv *.dat analyzed
-> > ```
-> > {: .language-bash}
-> > Jamie needs to move her files `fructose.dat` and `sucrose.dat` to the `analyzed` directory.
-> > The shell will expand *.dat to match all .dat files in the current directory.
-> > The `mv` command then moves the list of .dat files to the "analyzed" directory.
-> {: .solution}
-{: .challenge}
-
 > ## Copy with Multiple Filenames
 >
 > For this exercise, you can test the commands in the `data-shell/data` directory.
@@ -691,51 +607,51 @@ but it does find the copy in `thesis` that we didn't delete.
 > {: .solution}
 {: .challenge}
 
-> ## Copy a folder structure but not the files
+
+### Nelle's Pipeline: Organizing Files
+
+Knowing just this much about files and directories,
+Nelle is ready to organize the files that the protein assay machine will create.
+First,
+she creates a directory called `north-pacific-gyre`
+(to remind herself where the data came from).
+Inside that,
+she creates a directory called `2012-07-03`,
+which is the date she started processing the samples.
+She used to use names like `conference-paper` and `revised-results`,
+but she found them hard to understand after a couple of years.
+(The final straw was when she found herself creating
+a directory called `revised-revised-results-3`.)
+
+> ## Sorting Output
 >
-> You're starting a new experiment, and would like to duplicate the file
-> structure from your previous experiment without the data files so you can
-> add new data.
->
-> Assume that the file structure is in a folder called '2016-05-18-data',
-> which contains a `data` folder that in turn contains folders named `raw` and
-> `processed` that contain data files.  The goal is to copy the file structure
-> of the `2016-05-18-data` folder into a folder called `2016-05-20-data` and
-> remove the data files from the directory you just created.
->
-> Which of the following set of commands would achieve this objective?
-> What would the other commands do?
->
-> ~~~
-> $ cp -r 2016-05-18-data/ 2016-05-20-data/
-> $ rm 2016-05-20-data/raw/*
-> $ rm 2016-05-20-data/processed/*
-> ~~~
-> {: .language-bash}
-> ~~~
-> $ rm 2016-05-20-data/raw/*
-> $ rm 2016-05-20-data/processed/*
-> $ cp -r 2016-05-18-data/ 2016-5-20-data/
-> ~~~
-> {: .language-bash}
-> ~~~
-> $ cp -r 2016-05-18-data/ 2016-05-20-data/
-> $ rm -r -i 2016-05-20-data/
-> ~~~
-> {: .language-bash}
-> >
-> > ## Solution
-> > The first set of commands achieves this objective.
-> > First we have a recursive copy of a data folder.
-> > Then two `rm` commands which remove all files in the specified directories.
-> > The shell expands the '*' wild card to match all files and subdirectories.
-> >
-> > The second set of commands have the wrong order: 
-> > attempting to delete files which haven't yet been copied,
-> > followed by the recursive copy command which would copy them.
-> >
-> > The third set of commands would achieve the objective, but in a time-consuming way:
-> > the first command copies the directory recursively, but the second command deletes
-> > interactively, prompting for confirmation for each file and directory.
-> {: .solution}
-{: .challenge}
+> Nelle names her directories "year-month-day",
+> with leading zeroes for months and days,
+> because the shell displays file and directory names in alphabetical order.
+> If she used month names,
+> December would come before July;
+> if she didn't use leading zeroes,
+> November ('11') would come before July ('7'). Similarly, putting the year first
+> means that June 2012 will come before June 2013.
+{: .callout}
+
+Each of her physical samples is labelled according to her lab's convention
+with a unique ten-character ID,
+such as "NENE01729A".
+This is what she used in her collection log
+to record the location, time, depth, and other characteristics of the sample,
+so she decides to use it as part of each data file's name.
+Since the assay machine's output is plain text,
+she will call her files `NENE01729A.txt`, `NENE01812A.txt`, and so on.
+All 1520 files will go into the same directory.
+
+In the current directory `data-shell`, you can see what files
+Nelle has by using the command:
+
+~~~
+$ ls north-pacific-gyre/2012-07-03/
+~~~
+{: .language-bash}
+
+Don't forget that you can use Tab completion to make this easier and quicker!
+

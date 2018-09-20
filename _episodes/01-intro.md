@@ -43,8 +43,8 @@ difficult, just a vocabulary of commands and a simple grammar for using them.
 This is what the shell provides - a simple language and a **command-line interface** 
 to use it through. 
 
-The heart of a command-line interface is a **read-evaluate-print loop** (REPL) called
-so because when you type a command and press <kbd>Return</kbd>.
+The heart of a command-line interface is a **read-evaluate-print loop** (REPL) so
+called because when you type a command and press <kbd>Return</kbd>.
 The shell
 reads it,
 executes (or "evaluates" it),
@@ -98,7 +98,7 @@ doesn't exist. Also, capitalization matters: `LS` is different to `ls`.
 
 Next we see the output that our command produced. In this case it is a listing 
 of files and folders in a location called `/` - we'll cover what all these mean 
-later today. Those using a macOS might recognize the output in this example.
+later. Those using a macOS might recognize the output in this example.
 
 Finally, the shell again prints the prompt and waits for you to type the next 
 command.
@@ -154,9 +154,9 @@ It is a different model of interacting than a GUI, and that
 will take some effort - and some time - to learn. A GUI 
 presents you with choices and you select one. With a **command line interface** (CLI) the choices are combinations 
 of commands and parameters, more like words in a language than buttons on a screen. They
-are not presented to you so
-you must learn a few, like learning some vocabulary in a new language. But a small 
-number of commands gets you a long way, and we'll cover those essential few today.
+are not presented to you as options directly, so
+you must learn a few like learning some vocabulary in a new language. But a small 
+number of commands gets you a long way, and we'll cover those essential few in this course.
 
 ### Flexibility and automation 
 

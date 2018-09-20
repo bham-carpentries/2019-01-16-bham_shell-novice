@@ -569,53 +569,6 @@ so that you and other people can put those programs into pipes to multiply their
 > standard input.
 {: .callout}
 
-> ## What Does `<` Mean?
->
-> Change directory to `data-shell` (the top level of our downloaded example data).
->
-> What is the difference between:
->
-> ~~~
-> $ wc -l notes.txt
-> ~~~
-> {: .language-bash}
->
-> and:
->
-> ~~~
-> $ wc -l < notes.txt
-> ~~~
-> {: .language-bash}
->
-> > ## Solution
-> > `<` is used to redirect input to a command. 
-> >
-> > In both examples, the shell returns the number of lines from the input to
-> > the `wc` command.
-> > In the first example, the input is the file `notes.txt` and the file name is
-> > given in the output from the `wc` command.
-> > In the second example, the contents of the file `notes.txt` are redirected to
-> > standard input.
-> > It is as if we have entered the contents of the file by typing at the prompt.
-> > Hence the file name is not given in the output - just the number of lines.
-> > Try this for yourself:
-> >
-> > ```
-> > $ wc -l
-> > this
-> > is
-> > a test
-> > Ctrl-D # This lets the shell know you have finished typing the input
-> > ```
-> > {: .language-bash}
-> >
-> > ```
-> > 3
-> > ```
-> > {: .output}
-> {: .solution}
-{: .challenge}
-
 > ## Why Does `uniq` Only Remove Adjacent Duplicates?
 >
 > The command `uniq` removes adjacent duplicated lines from its input.
@@ -689,73 +642,6 @@ so that you and other people can put those programs into pipes to multiply their
 > > 2012-11-05,raccoon
 > > ```
 > > {: .source}
-> {: .solution}
-{: .challenge}
-
-> ## Pipe Construction
->
-> For the file `animals.txt` from the previous exercise, the command:
->
-> ~~~
-> $ cut -d , -f 2 animals.txt
-> ~~~
-> {: .language-bash}
-> 
-> uses the -d flag to separate each line by comma, and the -f flag
-> to print the second field in each line, to give the following output:
->
-> ~~~
-> deer
-> rabbit
-> raccoon
-> rabbit
-> deer
-> fox
-> rabbit
-> bear
-> ~~~
-> {: .output}
->
-> What other command(s) could be added to this in a pipeline to find
-> out what animals the file contains (without any duplicates in their
-> names)?
->
-> > ## Solution
-> > ```
-> > $ cut -d , -f 2 animals.txt | sort | uniq
-> > ```
-> > {: .language-bash}
-> {: .solution}
-{: .challenge}
-
-> ## Which Pipe?
->
-> The file `animals.txt` contains 586 lines of data formatted as follows:
->
-> ~~~
-> 2012-11-05,deer
-> 2012-11-05,rabbit
-> 2012-11-05,raccoon
-> 2012-11-06,rabbit
-> ...
-> ~~~
-> {: .output}
->
-> Assuming your current directory is `data-shell/data/`,
-> what command would you use to produce a table that shows
-> the total count of each type of animal in the file?
->
-> 1.  `grep {deer, rabbit, raccoon, deer, fox, bear} animals.txt | wc -l`
-> 2.  `sort animals.txt | uniq -c`
-> 3.  `sort -t, -k2,2 animals.txt | uniq -c`
-> 4.  `cut -d, -f 2 animals.txt | uniq -c`
-> 5.  `cut -d, -f 2 animals.txt | sort | uniq -c`
-> 6.  `cut -d, -f 2 animals.txt | sort | uniq -c | wc -l`
->
-> > ## Solution
-> > Option 5. is the correct answer.
-> > If you have difficulty understanding why, try running the commands, or sub-sections of
-> > the pipelines (make sure you are in the `data-shell/data` directory).
 > {: .solution}
 {: .challenge}
 
@@ -886,26 +772,3 @@ so this matches all the valid data files she has.
 > {: .solution}
 {: .challenge}
 
-> ## Removing Unneeded Files
->
-> Suppose you want to delete your processed data files, and only keep
-> your raw files and processing script to save storage.
-> The raw files end in `.dat` and the processed files end in `.txt`.
-> Which of the following would remove all the processed data files,
-> and *only* the processed data files?
->
-> 1. `rm ?.txt`
-> 2. `rm *.txt`
-> 3. `rm * .txt`
-> 4. `rm *.*`
->
-> > ## Solution
-> > 1. This would remove `.txt` files with one-character names
-> > 2. This is correct answer
-> > 3. The shell would expand `*` to match everything in the current directory,
-> > so the command would try to remove all matched files and an additional
-> > file called `.txt`
-> > 4. The shell would expand `*.*` to match all files with any extension,
-> > so this command would delete all files
-> {: .solution}
-{: .challenge}

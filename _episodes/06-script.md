@@ -75,19 +75,6 @@ ATOM     13  H           1      -3.172  -1.337   0.206  1.00  0.00
 Sure enough,
 our script's output is exactly what we would get if we ran that pipeline directly.
 
-> ## Text vs. Whatever
->
-> We usually call programs like Microsoft Word or LibreOffice Writer "text
-> editors", but we need to be a bit more careful when it comes to
-> programming. By default, Microsoft Word uses `.docx` files to store not
-> only text, but also formatting information about fonts, headings, and so
-> on. This extra information isn't stored as characters, and doesn't mean
-> anything to tools like `head`: they expect input files to contain
-> nothing but the letters, digits, and punctuation on a standard computer
-> keyboard. When editing programs, therefore, you must either use a plain
-> text editor, or be careful to save files as plain text.
-{: .callout}
-
 What if we want to select lines from an arbitrary file?
 We could edit `middle.sh` each time to change the filename,
 but that would probably take longer than just retyping the command.
@@ -292,8 +279,15 @@ $ bash sorted.sh *.pdb ../creatures/*.dat
 > Write a shell script called `species.sh` that takes any number of
 > filenames as command-line arguments, and uses `cut`, `sort`, and
 > `uniq` to print a list of the unique species appearing in each of
-> those files separately.
+> those files separately. 
 >
+> `cut` is a program that splits each line of input it's given and returns the requested element.
+> For example, running the following:
+> ```
+> cut -d - -f 3
+> ```
+> on the above text would return the year from the time stamp ('2013' 8 times in this case)
+> 
 > > ## Solution
 > >
 > > ```
@@ -361,31 +355,11 @@ The file `redo-figure-3.sh` now contains:
 ~~~
 {: .source}
 
+TODO: cmd line options to history to remove line numebers?
+
 After a moment's work in an editor to remove the serial numbers on the commands,
 and to remove the final line where we called the `history` command,
 we have a completely accurate record of how we created that figure.
-
-> ## Why Record Commands in the History Before Running Them?
->
-> If you run the command:
->
-> ~~~
-> $ history | tail -n 5 > recent.sh
-> ~~~
-> {: .language-bash}
->
-> the last command in the file is the `history` command itself, i.e.,
-> the shell has added `history` to the command log before actually
-> running it. In fact, the shell *always* adds commands to the log
-> before running them. Why do you think it does this?
->
-> > ## Solution
-> > If a command causes something to crash or hang, it might be useful
-> > to know what that command was, in order to investigate the problem.
-> > Were the command only be recorded after running it, we would not
-> > have a record of the last command run in the event of a crash.
-> {: .solution}
-{: .challenge}
 
 In practice, most people develop shell scripts by running commands at the shell prompt a few times
 to make sure they're doing the right thing,
@@ -397,7 +371,7 @@ and save it as a shell script.
 
 ## Nelle's Pipeline: Creating a Script
 
-Nelle's supervisor insisted that all her analytics must be reproducible. The easiest way to capture all the steps is in a script.
+Nelle's supervisor insisted that all her analytics must be reproducible. The easiest way to do this is to capture all the steps is in a script.
 She runs the editor and writes the following:
 
 ~~~
@@ -523,50 +497,6 @@ Of course, this introduces another tradeoff between flexibility and complexity.
 > > wc -l $1/*.$2 | sort -n | tail -n 2 | head -n 1
 > > ```
 > > {: .source}
-> {: .solution}
-{: .challenge}
-
-> ## Script Reading Comprehension
->
-> For this question, consider the `data-shell/molecules` directory once again.
-> This contains a number of `.pdb` files in addition to any other files you
-> may have created.
-> Explain what a script called `example.sh` would do when run as
-> `bash example.sh *.pdb` if it contained the following lines:
->
-> ~~~
-> # Script 1
-> echo *.*
-> ~~~
-> {: .language-bash}
->
-> ~~~
-> # Script 2
-> for filename in $1 $2 $3
-> do
->     cat $filename
-> done
-> ~~~
-> {: .language-bash}
->
-> ~~~
-> # Script 3
-> echo $@.pdb
-> ~~~
-> {: .language-bash}
->
-> > ## Solutions
-> > Script 1 would print out a list of all files containing a dot in their name.
-> >
-> > Script 2 would print the contents of the first 3 files matching the file extension.
-> > The shell expands the wildcard before passing the arguments to the `example.sh` script.
-> > 
-> > Script 3 would print all the arguments to the script (i.e. all the `.pdb` files),
-> > followed by `.pdb`.
-> > ```
-> > cubane.pdb ethane.pdb methane.pdb octane.pdb pentane.pdb propane.pdb.pdb
-> > ```
-> > {: .output}
 > {: .solution}
 {: .challenge}
 
