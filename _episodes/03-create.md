@@ -116,8 +116,6 @@ $ ls -F thesis
 Let's change our working directory to `thesis` using `cd`,
 then run a text editor called Nano to create a file called `draft.txt`:
 
-## TODO:  Figure out good default text editor and update accordingly
-
 ~~~
 $ cd thesis
 $ nano draft.txt
