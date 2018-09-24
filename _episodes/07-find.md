@@ -53,14 +53,6 @@ Software is like that.
 ~~~
 {: .output}
 
-> ## Forever, or Five Years
->
-> We haven't linked to the original haikus because they don't appear to be on *Salon*'s site any longer.
-> As [Jeff Rothenberg said](http://www.clir.org/pubs/archives/ensuring.pdf),
-> "Digital information lasts forever --- or five years, whichever comes first."
-> Luckily, popular content often [has backups](http://wiki.c2.com/?ComputerErrorHaiku).
-{: .callout}
-
 Let's find lines that contain the word "not":
 
 ~~~
@@ -278,65 +270,6 @@ Miscellaneous:
 > matches a single character (just like `?` in the shell), while the `o`
 > matches an actual 'o'.
 {: .callout}
-
-> ## Tracking a Species
-> 
-> Leah has several hundred 
-> data files saved in one directory, each of which is formatted like this:
-> 
-> ~~~
-> 2013-11-05,deer,5
-> 2013-11-05,rabbit,22
-> 2013-11-05,raccoon,7
-> 2013-11-06,rabbit,19
-> 2013-11-06,deer,2
-> ~~~
-> {: .source}
->
-> She wants to write a shell script that takes a species as the first command-line argument 
-> and a directory as the second argument. The script should return one file called `species.txt` 
-> containing a list of dates and the number of that species seen on each date.
-> For example using the data shown above, `rabbit.txt` would contain:
-> 
-> ~~~
-> 2013-11-05,22
-> 2013-11-06,19
-> ~~~
-> {: .source}
->
-> Put these commands and pipes in the right order to achieve this:
-> 
-> ~~~
-> cut -d : -f 2  
-> >  
-> |  
-> grep -w $1 -r $2  
-> |  
-> $1.txt  
-> cut -d , -f 1,3  
-> ~~~
-> {: .language-bash}
->
-> Hint: use `man grep` to look for how to grep text recursively in a directory
-> and `man cut` to select more than one field in a line.
->
-> An example of such a file is provided in `data-shell/data/animal-counts/animals.txt`
->
-> > ## Solution
-> >
-> > ```
-> > grep -w $1 -r $2 | cut -d : -f 2 | cut -d , -f 1,3  > $1.txt
-> > ```
-> > {: .source}
-> >
-> > You would call the script above like this:
-> >
-> > ```
-> > $ bash count-species.sh bear .
-> > ```
-> > {: .language-bash}
-> {: .solution}
-{: .challenge}
 
 > ## Little Women
 >
@@ -630,51 +563,3 @@ $ grep "FE" $(find .. -name '*.pdb')
 > ideas from it, and imitation is also the sincerest form of praise.
 {: .callout}
 
-The Unix shell is older than most of the people who use it. It has
-survived so long because it is one of the most productive programming
-environments ever created --- maybe even *the* most productive. Its syntax
-may be cryptic, but people who have mastered it can experiment with
-different commands interactively, then use what they have learned to
-automate their work. Graphical user interfaces may be better at the
-first, but the shell is still unbeaten at the second. And as Alfred
-North Whitehead wrote in 1911, "Civilization advances by extending the
-number of important operations which we can perform without thinking
-about them."
-
-> ## `find` Pipeline Reading Comprehension
->
-> Write a short explanatory comment for the following shell script:
->
-> ~~~
-> wc -l $(find . -name '*.dat') | sort -n
-> ~~~
-> {: .language-bash}
->
-> > ## Solution
-> > 1. Find all files with a `.dat` extension in the current directory
-> > 2. Count the number of lines each of these files contains
-> > 3. Sort the output from step 2. numerically
-> {: .solution}
-{: .challenge}
-
-> ## Finding Files With Different Properties
-> 
-> The `find` command can be given several other criteria known as "tests"
-> to locate files with specific attributes, such as creation time, size,
-> permissions, or ownership.  Use `man find` to explore these, and then
-> write a single command to find all files in or below the current directory
-> that were modified by the user `ahmed` in the last 24 hours.
->
-> Hint 1: you will need to use three tests: `-type`, `-mtime`, and `-user`.
->
-> Hint 2: The value for `-mtime` will need to be negative---why?
->
-> > ## Solution
-> > Assuming that Nelle’s home is our working directory we type:
-> >
-> > ~~~
-> > $ find ./ -type f -mtime -1 -user ahmed
-> > ~~~
-> > {: .language-bash}
-> {: .solution}
-{: .challenge}

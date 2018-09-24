@@ -23,7 +23,7 @@ keypoints:
 - "An absolute path specifies a location from the root of the file system."
 - "Directory names in a path are separated with `/` on Unix, but `\\` on Windows."
 - "`..` means 'the directory above the current one'; `.` on its own means 'the current directory'."
-- "Most files' names are `something.extension`. The extension isn't required, and doesn't guarantee anything, but is normally used to indicate the type of data in the file."
+- "You can make bash attempt to auto-complete a file or directory name using the 'Tab' key"
 ---
 
 The part of the operating system responsible for managing files and directories 
@@ -452,7 +452,7 @@ directory name to change our working directory.
 `cd` stands for "change directory",
 which is a bit misleading:
 the command doesn't change the directory,
-it changes the shell's idea of what directory we are in.
+it changes the **working** directory that we are running commands in..
 
 Let's say we want to move to the `data` directory we saw above.  We can
 use the following series of commands to get there:
@@ -538,6 +538,19 @@ $ pwd
 ~~~
 {: .output}
 
+This special diectory can be passed to all the built in bash programs such as `cd` and `ls` and
+will be interpreted the same way:
+
+~~~
+$ ls -F ..
+~~~
+{: .language-bash}
+
+~~~
+data-shell/
+~~~
+{: .output}
+
 The special directory `..` doesn't usually show up when we run `ls`.  If we want
 to display it, we can give `ls` the `-a` flag:
 
@@ -574,19 +587,6 @@ equivalent to `ls -Fa`.
 > different programs on your computer. The prefix `.` is used to prevent these
 > configuration files from cluttering the terminal when a standard `ls` command
 > is used.
-{: .callout}
-
-> ## Orthogonality
->
-> The special names `.` and `..` don't belong to `cd`;
-> they are interpreted the same way by every program.
-> For example,
-> if we are in `/Users/nelle/data`,
-> the command `ls ..` will give us a listing of `/Users/nelle`.
-> When the meanings of the parts are the same no matter how they're combined,
-> programmers say they are **orthogonal**:
-> Orthogonal systems tend to be easier for people to learn
-> because there are fewer special cases and exceptions to keep track of.
 {: .callout}
 
 These then, are the basic commands for navigating the filesystem on your computer:
@@ -728,100 +728,51 @@ Run `pwd` and `ls -F` to ensure that we're in the directory we expect.
 > {: .solution}
 {: .challenge}
 
-> ## `ls` Reading Comprehension
->
-> Assuming a directory structure as in the above Figure
-> (File System for Challenge Questions), if `pwd` displays `/Users/backup`,
-> and `-r` tells `ls` to display things in reverse order,
-> what command will display:
->
-> ~~~
-> pnas_sub/ pnas_final/ original/
-> ~~~
-> {: .output}
->
-> 1.  `ls pwd`
-> 2.  `ls -r -F`
-> 3.  `ls -r -F /Users/backup`
-> 4.  Either #2 or #3 above, but not #1.
->
-> > ## Solution
-> >  1. No: `pwd` is not the name of a directory.
-> >  2. Yes: `ls` without directory argument lists files and directories
-> >     in the current directory.
-> >  3. Yes: uses the absolute path explicitly.
-> >  4. Correct: see explanations above.
-> {: .solution}
-{: .challenge}
+### Tab Completion
 
-### Nelle's Pipeline: Organizing Files
-
-Knowing just this much about files and directories,
-Nelle is ready to organize the files that the protein assay machine will create.
-First,
-she creates a directory called `north-pacific-gyre`
-(to remind herself where the data came from).
-Inside that,
-she creates a directory called `2012-07-03`,
-which is the date she started processing the samples.
-She used to use names like `conference-paper` and `revised-results`,
-but she found them hard to understand after a couple of years.
-(The final straw was when she found herself creating
-a directory called `revised-revised-results-3`.)
-
-> ## Sorting Output
->
-> Nelle names her directories "year-month-day",
-> with leading zeroes for months and days,
-> because the shell displays file and directory names in alphabetical order.
-> If she used month names,
-> December would come before July;
-> if she didn't use leading zeroes,
-> November ('11') would come before July ('7'). Similarly, putting the year first
-> means that June 2012 will come before June 2013.
-{: .callout}
-
-Each of her physical samples is labelled according to her lab's convention
-with a unique ten-character ID,
-such as "NENE01729A".
-This is what she used in her collection log
-to record the location, time, depth, and other characteristics of the sample,
-so she decides to use it as part of each data file's name.
-Since the assay machine's output is plain text,
-she will call her files `NENE01729A.txt`, `NENE01812A.txt`, and so on.
-All 1520 files will go into the same directory.
-
-Now in her current directory `data-shell`,
-Nelle can see what files she has using the command:
+File and directory names can be quite long and tricky to type in correctly. To avoid the inevitable errors
+from all this typing, you can use the bash tool of *Tab Completion*. What this means is, if you supply
+part of a file or directory name and press the Tab button on your keyboard, bash will attempt
+to fill in the rest of the name given what is present in the directory. For example, if you go to
+the `data-shell` directory:
 
 ~~~
-$ ls north-pacific-gyre/2012-07-03/
+$ cd /Users/nelle/Desktop/data-shell
+$ pwd
 ~~~
 {: .language-bash}
 
-This is a lot to type,
-but she can let the shell do most of the work through what is called **tab completion**.
-If she types:
+~~~
+/Users/nelle/Desktop/data-shell/data
+~~~
+{: .output}
+
+And then type:
 
 ~~~
-$ ls nor
-~~~
-{: .language-bash}
-
-and then presses tab (the tab key on her keyboard),
-the shell automatically completes the directory name for her:
-
-~~~
-$ ls north-pacific-gyre/
+$ cd d [TAB]
 ~~~
 {: .language-bash}
 
-If she presses tab again,
-Bash will add `2012-07-03/` to the command,
-since it's the only possible completion.
-Pressing tab again does nothing,
-since there are 19 possibilities;
-pressing tab twice brings up a list of all the files,
-and so on.
-This is called **tab completion**,
-and we will see it in many other tools as we go on.
+~~~
+$ cd data/
+~~~
+{: .output}
+
+bash will automatically complete the directory name as that's the only thing that begins with `'d'`
+in the current working directory. If you press Tab again, because there are now multiple files and directories in the
+`data` directory, it will give you a list of the possible options:
+       
+~~~
+$ cd data/ [TAB]
+~~~
+{: .language-bash}
+
+~~~
+$ cd data/
+amino-acids.txt   elements/     pdb/	        salmon.txt
+animals.txt       morse.txt     planets.txt     sunspot.txt
+~~~
+{: .output}
+
+Note that the command **won't run** until you confirm it by pressing Enter!
